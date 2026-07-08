@@ -1,0 +1,88 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>图纸标注</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<button type="button" onclick="RunButton1()">一键创建构件图</button>-->
+<!--<script>-->
+
+<!--    function RunButton1() {-->
+
+<!--        fetch("https://71a8-36-33-27-181.ngrok-free.app/run-button1", {-->
+<!--            method: "POST"-->
+<!--        }).then(r=>{-->
+<!--            console.log("status=",r.status);-->
+<!--            return r.text();-->
+<!--        })-->
+<!--            .then(t=>{-->
+<!--                console.log(t);-->
+<!--            })-->
+
+<!--            .then(response => response.text())-->
+
+<!--            .then(result => {-->
+
+<!--                alert(result);-->
+
+<!--            })-->
+
+<!--            .catch(error => {-->
+
+<!--                alert("连接WinForm失败");-->
+
+<!--                console.log(error);-->
+
+<!--            });-->
+
+<!--    }-->
+
+<!--</script>-->
+
+<!--</body>-->
+<!--</html>-->
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>图纸标注</title>
+</head>
+<body>
+<button type="button" onclick="RunButton1()">一键创建构件图</button>
+<div id="status"></div>
+
+<script>
+    const ngrokUrl = "https://d565-36-33-27-181.ngrok-free.app";
+
+    function RunButton1() {
+        const status = document.getElementById("status");
+        status.innerHTML = "正在请求...";
+
+        fetch(ngrokUrl + "/run-button1", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then(r => {
+                console.log("Status:", r.status);
+                if (!r.ok) throw new Error("HTTP " + r.status);
+                return r.text();
+            })
+            .then(result => {
+                console.log("返回内容:", result);
+                status.innerHTML = `<span style="color:green">✅ ${result}</span>`;
+                alert(result);
+            })
+            .catch(error => {
+                console.error(error);
+                status.innerHTML = `<span style="color:red">❌ 连接失败: ${error.message}</span>`;
+                alert("连接WinForm失败，请检查ngrok和程序是否运行");
+            });
+    }
+</script>
+</body>
+</html>
